@@ -136,7 +136,7 @@ fi
 
 NODES=(
     "https://github.com/ltdrdata/ComfyUI-Manager"
-    "https://github.com/Gourieff/comfyui-reactor-node"
+    # "https://github.com/Gourieff/comfyui-reactor-node" this one is not working, I think it needs to download and install onnxruntime-gpu
     "https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite"
     "https://github.com/FizzleDorf/ComfyUI_FizzNodes"
 )
@@ -147,6 +147,7 @@ CHECKPOINT_MODELS=(
     "https://civitai.com/api/download/models/245598" # Realistic Vision V6.0 B1 sd 1.5
     #"https://civitai.com/api/download/models/247444" # nightvision sd xl
     "https://civitai.com/api/download/models/132760" # absolute reality sd 1.5
+    "https://civitai.com/api/download/models/289073" # real dream sd 1.5
     #"https://huggingface.co/stabilityai/stable-diffusion-2-1/resolve/main/v2-1_768-ema-pruned.ckpt"
     #"https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors"
     #"https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors"

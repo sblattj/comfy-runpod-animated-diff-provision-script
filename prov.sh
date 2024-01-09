@@ -19,14 +19,6 @@ face_restore_models_dir=${models_dir}/facerestore_models
 
 ### Install custom nodes
 
-# ComfyUI-Manager - this should get installed below
-# this_node_dir=${nodes_dir}/ComfyUI-Manager
-# if [[ ! -d $this_node_dir ]]; then
-#     git clone https://github.com/ltdrdata/ComfyUI-Manager $this_node_dir
-# else
-#     (cd $this_node_dir && git pull)
-# fi
-
 # ComfyUI-AnimateDiff-Evolved
 this_node_dir=${nodes_dir}/ComfyUI-AnimateDiff-Evolved
 if [[ ! -d $this_node_dir ]]; then
@@ -39,22 +31,6 @@ fi
 this_node_dir=${nodes_dir}/ComfyUI-Advanced-ControlNet
 if [[ ! -d $this_node_dir ]]; then
     git clone https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet $this_node_dir
-else
-    (cd $this_node_dir && git pull)
-fi
-
-# ComfyUI_FizzNodes
-this_node_dir=${nodes_dir}/ComfyUI_FizzNodes
-if [[ ! -d $this_node_dir ]]; then
-    git clone https://github.com/FizzleDorf/ComfyUI_FizzNodes $this_node_dir
-else
-    (cd $this_node_dir && git pull)
-fi
-
-# comfyui-reactor-node
-this_node_dir=${nodes_dir}/comfyui-reactor-node
-if [[ ! -d $this_node_dir ]]; then
-    git clone https://github.com/Gourieff/comfyui-reactor-node $this_node_dir
 else
     (cd $this_node_dir && git pull)
 fi
@@ -168,6 +144,9 @@ fi
 
 NODES=(
     "https://github.com/ltdrdata/ComfyUI-Manager"
+    "https://github.com/Gourieff/comfyui-reactor-node"
+    "https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite"
+    "https://github.com/FizzleDorf/ComfyUI_FizzNodes"
 )
 
 CHECKPOINT_MODELS=(

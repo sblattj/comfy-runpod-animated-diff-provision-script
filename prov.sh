@@ -99,14 +99,6 @@ if [[ ! -e ${model_file} ]]; then
     download ${model_url} ${model_file}
 fi
 
-## face restore
-model_file=${face_restore_models_dir}/GFPGANv1.4.pth
-model_url=https://huggingface.co/nlightcho/gfpgan_v14/resolve/main/GFPGANv1.4.pth
-if [[ ! -e ${model_file} ]]; then
-    printf "GFPGANv1.4.pth...\n"
-    download ${model_url} ${model_file}
-fi
-
 ## Standard
 # v1-5-pruned-emaonly
 # model_file=${checkpoints_dir}/v1-5-pruned-emaonly.ckpt
@@ -198,6 +190,10 @@ CONTROLNET_MODELS=(
     #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_style-fp16.safetensors"
 )
 
+FACERESTORE_MODELS=(
+    "https://huggingface.co/nlightcho/gfpgan_v14/resolve/main/GFPGANv1.4.pth"
+)
+
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
 
 # nodes_dir=/opt/ComfyUI/custom_nodes
@@ -209,6 +205,7 @@ CONTROLNET_MODELS=(
 # upscale_dir=${models_dir}/upscale_models
 # animated_models_dir=${nodes_dir}/ComfyUI-AnimateDiff-Evolved/models
 # motion_models_dir=${nodes_dir}/ComfyUI-AnimateDiff-Evolved/motion_lora
+# face_restore_models_dir=${models_dir}/facerestore_models
 
 function provisioning_start() {
     DISK_GB_AVAILABLE=$(($(df --output=avail -m "${WORKSPACE}" | tail -n1) / 1000))
@@ -231,6 +228,9 @@ function provisioning_start() {
     provisioning_get_models \
         "${upscale_dir}" \
         "${ESRGAN_MODELS[@]}"
+    provisioning_get_models \
+        "${face_restore_models_dir}" \
+        "${FACERESTORE_MODELS[@]}"
     provisioning_print_end
 }
 

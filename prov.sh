@@ -9,6 +9,7 @@ function download() {
 nodes_dir=/opt/ComfyUI/custom_nodes
 models_dir=/opt/ComfyUI/models
 checkpoints_dir=${models_dir}/checkpoints
+embeddings_dir=${models_dir}/embeddings
 vae_dir=${models_dir}/vae
 controlnet_dir=${models_dir}/controlnet
 loras_dir=${models_dir}/loras
@@ -143,14 +144,29 @@ NODES=(
 
 CHECKPOINT_MODELS=(
     "https://civitai.com/api/download/models/128713" # dreamshaper_8 sd 1.5
-    "https://civitai.com/api/download/models/251662" # Dreamshaper_XL sd xl
+    # "https://civitai.com/api/download/models/251662" # Dreamshaper_XL sd xl
     "https://civitai.com/api/download/models/245598" # Realistic Vision V6.0 B1 sd 1.5
-    "https://civitai.com/api/download/models/247444" # nightvision sd xl
+    # "https://civitai.com/api/download/models/247444" # nightvision sd xl
     "https://civitai.com/api/download/models/132760" # absolute reality sd 1.5
     "https://civitai.com/api/download/models/289073" # real dream sd 1.5
+    "https://civitai.com/api/download/models/272376" # PicX_real sd 1.5
     #"https://huggingface.co/stabilityai/stable-diffusion-2-1/resolve/main/v2-1_768-ema-pruned.ckpt"
     #"https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors"
     #"https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors"
+)
+
+EMBEDDINGS_MODELS=(
+    "https://civitai.com/api/download/models/173652" # gal gadot sd 1.5
+    "https://civitai.com/api/download/models/179331" # emma watson sd 1.5
+    "https://civitai.com/api/download/models/124799" # NataLee sd 1.5
+    "https://civitai.com/api/download/models/58268" # herm grang sd 1.5
+    "https://civitai.com/api/download/models/4947" # ana de ar sd 1.5
+    "https://civitai.com/api/download/models/131999" # scarlett jo sd 1.5
+    "https://civitai.com/api/download/models/51490" # selena gomez sd 1.5
+    "https://civitai.com/api/download/models/27448" # donald trump sd 1.5
+    "https://civitai.com/api/download/models/196107" # jenna ortega sd 1.5
+    "https://civitai.com/api/download/models/268916" # zooey deschanel sd 1.5
+    "https://civitai.com/api/download/models/19183" # ariana grande sd 1.4 - does this work?
 )
 
 LORA_MODELS=(
@@ -221,6 +237,9 @@ function provisioning_start() {
     provisioning_get_models \
         "${checkpoints_dir}" \
         "${CHECKPOINT_MODELS[@]}"
+    provisioning_get_models \
+        "${embeddings_dir}" \
+        "${EMBEDDINGS_MODELS[@]}"
     provisioning_get_models \
         "${loras_dir}" \
         "${LORA_MODELS[@]}"

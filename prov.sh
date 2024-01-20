@@ -143,9 +143,9 @@ NODES=(
 
 CHECKPOINT_MODELS=(
     "https://civitai.com/api/download/models/128713" # dreamshaper_8 sd 1.5
-    #"https://civitai.com/api/download/models/251662" # Dreamshaper_XL sd xl
+    "https://civitai.com/api/download/models/251662" # Dreamshaper_XL sd xl
     "https://civitai.com/api/download/models/245598" # Realistic Vision V6.0 B1 sd 1.5
-    #"https://civitai.com/api/download/models/247444" # nightvision sd xl
+    "https://civitai.com/api/download/models/247444" # nightvision sd xl
     "https://civitai.com/api/download/models/132760" # absolute reality sd 1.5
     "https://civitai.com/api/download/models/289073" # real dream sd 1.5
     #"https://huggingface.co/stabilityai/stable-diffusion-2-1/resolve/main/v2-1_768-ema-pruned.ckpt"

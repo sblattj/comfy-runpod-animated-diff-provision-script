@@ -150,6 +150,7 @@ CHECKPOINT_MODELS=(
     "https://civitai.com/api/download/models/132760" # absolute reality sd 1.5
     "https://civitai.com/api/download/models/289073" # real dream sd 1.5
     "https://civitai.com/api/download/models/272376" # PicX_real sd 1.5
+    "https://civitai.com/api/download/models/255666" # JernauMix sd 1.5
     #"https://huggingface.co/stabilityai/stable-diffusion-2-1/resolve/main/v2-1_768-ema-pruned.ckpt"
     #"https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors"
     #"https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors"
@@ -166,7 +167,9 @@ EMBEDDINGS_MODELS=(
     "https://civitai.com/api/download/models/27448" # donald trump sd 1.5
     "https://civitai.com/api/download/models/196107" # jenna ortega sd 1.5
     "https://civitai.com/api/download/models/268916" # zooey deschanel sd 1.5
-    "https://civitai.com/api/download/models/19183" # ariana grande sd 1.4 - does this work?
+    "https://civitai.com/api/download/models/152041" # marilyn monroe sd 1.5
+    "https://civitai.com/api/download/models/104795" # audrey hepburn sd 1.5 - this looks horrible, does it work?
+    "https://civitai.com/api/download/models/19183" # ariana grande sd 1.4 - does this work? not really...
 )
 
 LORA_MODELS=(

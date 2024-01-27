@@ -298,6 +298,10 @@ function provisioning_get_models() {
     
     printf "Downloading %s model(s) to %s...\n" "${#arr[@]}" "$dir"
     for url in "${arr[@]}"; do
+        # Check if URL is from civitai
+        if [[ "$url" == *"civitai.com"* ]]; then
+            url="${url}?token=${API_KEY}" # Append token to civitai URL
+        fi
         printf "Downloading: %s\n" "${url}"
         provisioning_download "${url}" "${dir}"
         printf "\n"

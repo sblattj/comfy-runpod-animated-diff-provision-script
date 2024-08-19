@@ -145,12 +145,13 @@ NODES=(
 CHECKPOINT_MODELS=(
     "https://civitai.com/api/download/models/128713" # dreamshaper_8 sd 1.5
     # "https://civitai.com/api/download/models/251662" # Dreamshaper_XL sd xl
-    "https://civitai.com/api/download/models/245598" # Realistic Vision V6.0 B1 sd 1.5
+    # "https://civitai.com/api/download/models/245598" # Realistic Vision V6.0 B1 sd 1.5
     # "https://civitai.com/api/download/models/247444" # nightvision sd xl
-    "https://civitai.com/api/download/models/132760" # absolute reality sd 1.5
-    "https://civitai.com/api/download/models/289073" # real dream sd 1.5
+    # "https://civitai.com/api/download/models/132760" # absolute reality sd 1.5
+    # "https://civitai.com/api/download/models/289073" # real dream sd 1.5
     "https://civitai.com/api/download/models/272376" # PicX_real sd 1.5
     "https://civitai.com/api/download/models/255666" # JernauMix sd 1.5
+    "https://civitai.com/api/download/models/691639?type=Model&format=SafeTensor&size=pruned&fp=fp32" # Flux 
     #"https://huggingface.co/stabilityai/stable-diffusion-2-1/resolve/main/v2-1_768-ema-pruned.ckpt"
     #"https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors"
     #"https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors"
@@ -300,7 +301,11 @@ function provisioning_get_models() {
     for url in "${arr[@]}"; do
         # Check if URL is from civitai
         if [[ "$url" == *"civitai.com"* ]]; then
-            url="${url}?token=${API_KEY}" # Append token to civitai URL
+            if [[ "$url" == *"?"* ]]; then
+                url+="&token=${API_KEY}"
+            else
+                url+="?token=${API_KEY}"
+            fi
         fi
         printf "Downloading: %s\n" "${url}"
         provisioning_download "${url}" "${dir}"

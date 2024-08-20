@@ -8,6 +8,8 @@ function download() {
 ## Set paths
 nodes_dir=/opt/ComfyUI/custom_nodes
 models_dir=/opt/ComfyUI/models
+clip_dir=${models_dir}/clip
+unet_dir=${models_dir}/unet
 checkpoints_dir=${models_dir}/checkpoints
 embeddings_dir=${models_dir}/embeddings
 vae_dir=${models_dir}/vae
@@ -151,10 +153,21 @@ CHECKPOINT_MODELS=(
     # "https://civitai.com/api/download/models/289073" # real dream sd 1.5
     "https://civitai.com/api/download/models/272376" # PicX_real sd 1.5
     "https://civitai.com/api/download/models/255666" # JernauMix sd 1.5
-    "https://civitai.com/api/download/models/691639?type=Model&format=SafeTensor&size=pruned&fp=fp32" # Flux 
     #"https://huggingface.co/stabilityai/stable-diffusion-2-1/resolve/main/v2-1_768-ema-pruned.ckpt"
     #"https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors"
     #"https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors"
+)
+
+UNET_MODELS=(
+    # "https://civitai.com/api/download/models/691639?type=Model&format=SafeTensor&size=pruned&fp=fp32" # FLUX.1
+    "https://huggingface.co/black-forest-labs/FLUX.1-dev/blob/main/flux1-dev.safetensors" # FLUX.1 If you have high VRAM and RAM.
+    "https://huggingface.co/black-forest-labs/FLUX.1-schnell/blob/main/flux1-schnell.safetensors" # FLUX.1 For lower memory usage
+)
+
+CLIP_MODELS=(
+    "https://huggingface.co/comfyanonymous/flux_text_encoders/blob/main/clip_l.safetensors" # FLUX.1
+    "https://huggingface.co/comfyanonymous/flux_text_encoders/blob/main/t5xxl_fp8_e4m3fn.safetensors" # FLUX.1 For lower memory usage (8-12GB)
+    # "https://huggingface.co/comfyanonymous/flux_text_encoders/blob/main/t5xxl_fp16.safetensors" # FLUX.1 For better results, if you have high VRAM and RAM(more than 32GB ram).
 )
 
 EMBEDDINGS_MODELS=(
@@ -179,6 +192,7 @@ LORA_MODELS=(
 
 VAE_MODELS=(
     # "https://huggingface.co/stabilityai/sd-vae-ft-ema-original/resolve/main/vae-ft-ema-560000-ema-pruned.safetensors"
+    "https://huggingface.co/black-forest-labs/FLUX.1-schnell/blob/main/ae.safetensors" # FLUX.1
     "https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.safetensors"
     "https://huggingface.co/stabilityai/sdxl-vae/resolve/main/sdxl_vae.safetensors"
 )
@@ -241,6 +255,12 @@ function provisioning_start() {
     provisioning_get_models \
         "${checkpoints_dir}" \
         "${CHECKPOINT_MODELS[@]}"
+    provisioning_get_models \
+        "${clip_dir}" \
+        "${CLIP_MODELS[@]}"
+    provisioning_get_models \
+        "${unet_dir}" \
+        "${UNET_MODELS[@]}"
     provisioning_get_models \
         "${embeddings_dir}" \
         "${EMBEDDINGS_MODELS[@]}"

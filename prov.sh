@@ -1,147 +1,29 @@
-#!/bin/false
+#!/bin/bash
 
-printf "\n##############################################\n#                                            #\n#          Provisioning container            #\n#                                            #\n#         This will take some time           #\n#                                            #\n# Your container will be ready on completion #\n#                                            #\n##############################################\n\n"
-function download() {
-    wget -q --show-progress -e dotbytes="${3:-4M}" -O "$2" "$1"
-}
+# This file will be sourced in init.sh
 
-## Set paths
-nodes_dir=/opt/ComfyUI/custom_nodes
-models_dir=/opt/ComfyUI/models
-clip_dir=${models_dir}/clip
-unet_dir=${models_dir}/unet
-checkpoints_dir=${models_dir}/checkpoints
-embeddings_dir=${models_dir}/embeddings
-vae_dir=${models_dir}/vae
-controlnet_dir=${models_dir}/controlnet
-loras_dir=${models_dir}/loras
-upscale_dir=${models_dir}/upscale_models
-animated_models_dir=${nodes_dir}/ComfyUI-AnimateDiff-Evolved/models
-motion_models_dir=${nodes_dir}/ComfyUI-AnimateDiff-Evolved/motion_lora
-face_restore_models_dir=${models_dir}/facerestore_models
+# https://raw.githubusercontent.com/ai-dock/comfyui/main/config/provisioning/default.sh
 
-### Install custom nodes
+# Packages are installed after nodes so we can fix them...
 
-# ComfyUI-AnimateDiff-Evolved
-this_node_dir=${nodes_dir}/ComfyUI-AnimateDiff-Evolved
-if [[ ! -d $this_node_dir ]]; then
-    git clone https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved $this_node_dir
-else
-    (cd $this_node_dir && git pull)
-fi
+#DEFAULT_WORKFLOW="https://..."
 
-# ComfyUI-Advanced-ControlNet
-this_node_dir=${nodes_dir}/ComfyUI-Advanced-ControlNet
-if [[ ! -d $this_node_dir ]]; then
-    git clone https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet $this_node_dir
-else
-    (cd $this_node_dir && git pull)
-fi
+APT_PACKAGES=(
+    #"package-1"
+    #"package-2"
+)
 
-## Animated
-model_file=${animated_models_dir}/mm_sd_v15_v2.ckpt
-model_url=https://huggingface.co/guoyww/animatediff/resolve/main/mm_sd_v15_v2.ckpt
-if [[ ! -e ${model_file} ]]; then
-    printf "mm_sd_v15_v2.ckpt...\n"
-    download ${model_url} ${model_file}
-fi
-
-model_file=${animated_models_dir}/v3_sd15_adapter.ckpt
-model_url=https://huggingface.co/guoyww/animatediff/resolve/main/v3_sd15_adapter.ckpt
-if [[ ! -e ${model_file} ]]; then
-    printf "v3_sd15_adapter.ckpt...\n"
-    download ${model_url} ${model_file}
-fi
-
-model_file=${animated_models_dir}/v3_sd15_mm.ckpt
-model_url=https://huggingface.co/guoyww/animatediff/resolve/main/v3_sd15_mm.ckpt
-if [[ ! -e ${model_file} ]]; then
-    printf "v3_sd15_mm.ckpt...\n"
-    download ${model_url} ${model_file}
-fi
-
-model_file=${animated_models_dir}/mm_sdxl_v10_beta.ckpt
-model_url=https://huggingface.co/guoyww/animatediff/resolve/main/mm_sdxl_v10_beta.ckpt
-if [[ ! -e ${model_file} ]]; then
-    printf "mm_sdxl_v10_beta.ckpt...\n"
-    download ${model_url} ${model_file}
-fi
-
-model_file=${animated_models_dir}/v3_sd15_sparsectrl_scribble.ckpt
-model_url=https://huggingface.co/guoyww/animatediff/resolve/main/v3_sd15_sparsectrl_scribble.ckpt
-if [[ ! -e ${model_file} ]]; then
-    printf "v3_sd15_sparsectrl_scribble.ckpt...\n"
-    download ${model_url} ${model_file}
-fi
-
-model_file=${motion_models_dir}/v2_lora_RollingAnticlockwise.ckpt
-model_url=https://huggingface.co/guoyww/animatediff/resolve/main/v2_lora_RollingAnticlockwise.ckpt
-if [[ ! -e ${model_file} ]]; then
-    printf "v2_lora_RollingAnticlockwise...\n"
-    download ${model_url} ${model_file}
-fi
-
-model_file=${motion_models_dir}/v2_lora_RollingClockwise.ckpt
-model_url=https://huggingface.co/guoyww/animatediff/resolve/main/v2_lora_RollingClockwise.ckpt
-if [[ ! -e ${model_file} ]]; then
-    printf "v2_lora_RollingClockwise...\n"
-    download ${model_url} ${model_file}
-fi
-
-model_file=${motion_models_dir}/v2_lora_ZoomIn.ckpt
-model_url=https://huggingface.co/guoyww/animatediff/resolve/main/v2_lora_ZoomIn.ckpt
-if [[ ! -e ${model_file} ]]; then
-    printf "v2_lora_ZoomIn...\n"
-    download ${model_url} ${model_file}
-fi
-
-model_file=${motion_models_dir}/v2_lora_ZoomOut.ckpt
-model_url=https://huggingface.co/guoyww/animatediff/resolve/main/v2_lora_ZoomOut.ckpt
-if [[ ! -e ${model_file} ]]; then
-    printf "v2_lora_ZoomOut...\n"
-    download ${model_url} ${model_file}
-fi
-
-## Standard
-# v1-5-pruned-emaonly
-# model_file=${checkpoints_dir}/v1-5-pruned-emaonly.ckpt
-# model_url=https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt
-
-# if [[ ! -e ${model_file} ]]; then
-#     printf "Downloading Stable Diffusion 1.5...\n"
-#     download ${model_url} ${model_file}
-# fi
-
-### Download controlnet
-# done below
-# model_file=${controlnet_dir}/control_canny-fp16.safetensors
-# model_url=https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_canny-fp16.safetensors
-# if [[ ! -e ${model_file} ]]; then
-#    printf "Downloading Canny...\n"
-#    download ${model_url} ${model_file}
-# fi
-
-### Download loras
-
-model_file=${loras_dir}/epi_noiseoffset2.safetensors
-model_url=https://civitai.com/api/download/models/16576
-if [[ ! -e ${model_file} ]]; then
-   printf "Downloading epi_noiseoffset2 lora...\n"
-   download ${model_url} ${model_file}
-fi
-
-model_file=${loras_dir}/lcm-lora-sdxl.safetensors
-model_url=https://huggingface.co/latent-consistency/lcm-lora-sdxl/resolve/main/pytorch_lora_weights.safetensors
-if [[ ! -e ${model_file} ]]; then
-   printf "Downloading lcm-lora-sdxl lora...\n"
-   download ${model_url} ${model_file}
-fi
+PIP_PACKAGES=(
+    #"package-1"
+    #"package-2"
+)
 
 NODES=(
     "https://github.com/ltdrdata/ComfyUI-Manager"
-    # "https://github.com/Gourieff/comfyui-reactor-node" this one is not working, I think it needs to download and install onnxruntime-gpu
+    "https://github.com/cubiq/ComfyUI_essentials"
     "https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite"
-    "https://github.com/FizzleDorf/ComfyUI_FizzNodes"
+    # "https://github.com/Gourieff/comfyui-reactor-node" this one is not working, I think it needs to download and install onnxruntime-gpu
+    # "https://github.com/FizzleDorf/ComfyUI_FizzNodes"
 )
 
 CHECKPOINT_MODELS=(
@@ -151,8 +33,8 @@ CHECKPOINT_MODELS=(
     # "https://civitai.com/api/download/models/247444" # nightvision sd xl
     # "https://civitai.com/api/download/models/132760" # absolute reality sd 1.5
     # "https://civitai.com/api/download/models/289073" # real dream sd 1.5
-    "https://civitai.com/api/download/models/272376" # PicX_real sd 1.5
-    "https://civitai.com/api/download/models/255666" # JernauMix sd 1.5
+    # "https://civitai.com/api/download/models/272376" # PicX_real sd 1.5
+    # "https://civitai.com/api/download/models/255666" # JernauMix sd 1.5
     #"https://huggingface.co/stabilityai/stable-diffusion-2-1/resolve/main/v2-1_768-ema-pruned.ckpt"
     #"https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors"
     #"https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors"
@@ -161,29 +43,13 @@ CHECKPOINT_MODELS=(
 UNET_MODELS=(
     # "https://civitai.com/api/download/models/691639?type=Model&format=SafeTensor&size=pruned&fp=fp32" # FLUX.1
     "https://huggingface.co/black-forest-labs/FLUX.1-dev/blob/main/flux1-dev.safetensors" # FLUX.1 If you have high VRAM and RAM.
-    "https://huggingface.co/black-forest-labs/FLUX.1-schnell/blob/main/flux1-schnell.safetensors" # FLUX.1 For lower memory usage
+    # "https://huggingface.co/black-forest-labs/FLUX.1-schnell/blob/main/flux1-schnell.safetensors" # FLUX.1 For lower memory usage
 )
 
 CLIP_MODELS=(
     "https://huggingface.co/comfyanonymous/flux_text_encoders/blob/main/clip_l.safetensors" # FLUX.1
     "https://huggingface.co/comfyanonymous/flux_text_encoders/blob/main/t5xxl_fp8_e4m3fn.safetensors" # FLUX.1 For lower memory usage (8-12GB)
     # "https://huggingface.co/comfyanonymous/flux_text_encoders/blob/main/t5xxl_fp16.safetensors" # FLUX.1 For better results, if you have high VRAM and RAM(more than 32GB ram).
-)
-
-EMBEDDINGS_MODELS=(
-    "https://civitai.com/api/download/models/173652" # gal gadot sd 1.5
-    "https://civitai.com/api/download/models/179331" # emma watson sd 1.5
-    "https://civitai.com/api/download/models/124799" # NataLee sd 1.5
-    "https://civitai.com/api/download/models/58268" # herm grang sd 1.5
-    "https://civitai.com/api/download/models/4947" # ana de ar sd 1.5
-    "https://civitai.com/api/download/models/131999" # scarlett jo sd 1.5
-    "https://civitai.com/api/download/models/51490" # selena gomez sd 1.5
-    "https://civitai.com/api/download/models/27448" # donald trump sd 1.5
-    "https://civitai.com/api/download/models/196107" # jenna ortega sd 1.5
-    "https://civitai.com/api/download/models/268916" # zooey deschanel sd 1.5
-    "https://civitai.com/api/download/models/152041" # marilyn monroe sd 1.5
-    "https://civitai.com/api/download/models/104795" # audrey hepburn sd 1.5 - this looks horrible, does it work?
-    "https://civitai.com/api/download/models/19183" # ariana grande sd 1.4 - does this work? not really...
 )
 
 LORA_MODELS=(
@@ -199,11 +65,11 @@ VAE_MODELS=(
 
 ESRGAN_MODELS=(
     "https://huggingface.co/ai-forever/Real-ESRGAN/resolve/main/RealESRGAN_x4.pth"
-    "https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/4x_RealisticRescaler_100000_G.pth"
+    # "https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/4x_RealisticRescaler_100000_G.pth"
     "https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/4x_NMKD-Superscale-SP_178000_G.pth"
-    "https://huggingface.co/lokCX/4x-Ultrasharp/resolve/main/4x-UltraSharp.pth"
+    # "https://huggingface.co/lokCX/4x-Ultrasharp/resolve/main/4x-UltraSharp.pth"
     "https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/8x_NMKD-Superscale_150000_G.pth"
-    "https://huggingface.co/FacehugmanIII/4x_foolhardy_Remacri/resolve/main/4x_foolhardy_Remacri.pth"
+    # "https://huggingface.co/FacehugmanIII/4x_foolhardy_Remacri/resolve/main/4x_foolhardy_Remacri.pth"
     "https://huggingface.co/Akumetsu971/SD_Anime_Futuristic_Armor/resolve/main/4x_NMKD-Siax_200k.pth"
 )
 
@@ -229,10 +95,6 @@ CONTROLNET_MODELS=(
     #"https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_style-fp16.safetensors"
 )
 
-FACERESTORE_MODELS=(
-    "https://huggingface.co/nlightcho/gfpgan_v14/resolve/main/GFPGANv1.4.pth"
-)
-
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
 
 # nodes_dir=/opt/ComfyUI/custom_nodes
@@ -247,39 +109,58 @@ FACERESTORE_MODELS=(
 # face_restore_models_dir=${models_dir}/facerestore_models
 
 function provisioning_start() {
-    DISK_GB_AVAILABLE=$(($(df --output=avail -m "${WORKSPACE}" | tail -n1) / 1000))
-    DISK_GB_USED=$(($(df --output=used -m "${WORKSPACE}" | tail -n1) / 1000))
-    DISK_GB_ALLOCATED=$(($DISK_GB_AVAILABLE + $DISK_GB_USED))
+    if [[ ! -d /opt/environments/python ]]; then 
+        export MAMBA_BASE=true
+    fi
+    source /opt/ai-dock/etc/environment.sh
+    source /opt/ai-dock/bin/venv-set.sh comfyui
+
     provisioning_print_header
+    provisioning_get_apt_packages
     provisioning_get_nodes
+    provisioning_get_pip_packages
     provisioning_get_models \
-        "${checkpoints_dir}" \
+        "${WORKSPACE}/storage/stable_diffusion/models/ckpt" \
         "${CHECKPOINT_MODELS[@]}"
     provisioning_get_models \
-        "${clip_dir}" \
+        "${WORKSPACE}/storage/stable_diffusion/models/clip" \
         "${CLIP_MODELS[@]}"
     provisioning_get_models \
-        "${unet_dir}" \
+        "${WORKSPACE}/storage/stable_diffusion/models/unet" \
         "${UNET_MODELS[@]}"
     provisioning_get_models \
-        "${embeddings_dir}" \
-        "${EMBEDDINGS_MODELS[@]}"
-    provisioning_get_models \
-        "${loras_dir}" \
+        "${WORKSPACE}/storage/stable_diffusion/models/lora" \
         "${LORA_MODELS[@]}"
     provisioning_get_models \
-        "${controlnet_dir}" \
+        "${WORKSPACE}/storage/stable_diffusion/models/controlnet" \
         "${CONTROLNET_MODELS[@]}"
     provisioning_get_models \
-        "${vae_dir}" \
+        "${WORKSPACE}/storage/stable_diffusion/models/vae" \
         "${VAE_MODELS[@]}"
     provisioning_get_models \
-        "${upscale_dir}" \
+        "${WORKSPACE}/storage/stable_diffusion/models/esrgan" \
         "${ESRGAN_MODELS[@]}"
-    provisioning_get_models \
-        "${face_restore_models_dir}" \
-        "${FACERESTORE_MODELS[@]}"
     provisioning_print_end
+}
+
+function pip_install() {
+    if [[ -z $MAMBA_BASE ]]; then
+            "$COMFYUI_VENV_PIP" install --no-cache-dir "$@"
+        else
+            micromamba run -n comfyui pip install --no-cache-dir "$@"
+        fi
+}
+
+function provisioning_get_apt_packages() {
+    if [[ -n $APT_PACKAGES ]]; then
+            sudo $APT_INSTALL ${APT_PACKAGES[@]}
+    fi
+}
+
+function provisioning_get_pip_packages() {
+    if [[ -n $PIP_PACKAGES ]]; then
+            pip_install ${PIP_PACKAGES[@]}
+    fi
 }
 
 function provisioning_get_nodes() {
@@ -292,41 +173,37 @@ function provisioning_get_nodes() {
                 printf "Updating node: %s...\n" "${repo}"
                 ( cd "$path" && git pull )
                 if [[ -e $requirements ]]; then
-                    micromamba -n comfyui run ${PIP_INSTALL} -r "$requirements"
+                   pip_install -r "$requirements"
                 fi
             fi
         else
             printf "Downloading node: %s...\n" "${repo}"
             git clone "${repo}" "${path}" --recursive
             if [[ -e $requirements ]]; then
-                micromamba -n comfyui run ${PIP_INSTALL} -r "${requirements}"
+                pip_install -r "${requirements}"
             fi
         fi
     done
 }
 
+function provisioning_get_default_workflow() {
+    if [[ -n $DEFAULT_WORKFLOW ]]; then
+        workflow_json=$(curl -s "$DEFAULT_WORKFLOW")
+        if [[ -n $workflow_json ]]; then
+            echo "export const defaultGraph = $workflow_json;" > /opt/ComfyUI/web/scripts/defaultGraph.js
+        fi
+    fi
+}
+
 function provisioning_get_models() {
     if [[ -z $2 ]]; then return 1; fi
+    
     dir="$1"
     mkdir -p "$dir"
     shift
-    if [[ $DISK_GB_ALLOCATED -ge $DISK_GB_REQUIRED ]]; then
-        arr=("$@")
-    else
-        printf "WARNING: Low disk space allocation - Only the first model will be downloaded!\n"
-        arr=("$1")
-    fi
-    
+    arr=("$@")
     printf "Downloading %s model(s) to %s...\n" "${#arr[@]}" "$dir"
     for url in "${arr[@]}"; do
-        # Check if URL is from civitai
-        if [[ "$url" == *"civitai.com"* ]]; then
-            if [[ "$url" == *"?"* ]]; then
-                url+="&token=${API_KEY}"
-            else
-                url+="?token=${API_KEY}"
-            fi
-        fi
         printf "Downloading: %s\n" "${url}"
         provisioning_download "${url}" "${dir}"
         printf "\n"
@@ -344,9 +221,51 @@ function provisioning_print_end() {
     printf "\nProvisioning complete:  Web UI will start now\n\n"
 }
 
+function provisioning_has_valid_hf_token() {
+    [[ -n "$HF_TOKEN" ]] || return 1
+    url="https://huggingface.co/api/whoami-v2"
+
+    response=$(curl -o /dev/null -s -w "%{http_code}" -X GET "$url" \
+        -H "Authorization: Bearer $HF_TOKEN" \
+        -H "Content-Type: application/json")
+
+    # Check if the token is valid
+    if [ "$response" -eq 200 ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+function provisioning_has_valid_civitai_token() {
+    [[ -n "$CIVITAI_TOKEN" ]] || return 1
+    url="https://civitai.com/api/v1/models?hidden=1&limit=1"
+
+    response=$(curl -o /dev/null -s -w "%{http_code}" -X GET "$url" \
+        -H "Authorization: Bearer $CIVITAI_TOKEN" \
+        -H "Content-Type: application/json")
+
+    # Check if the token is valid
+    if [ "$response" -eq 200 ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 # Download from $1 URL to $2 file path
 function provisioning_download() {
-    wget -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1"
+    if [[ -n $HF_TOKEN && $1 =~ ^https://([a-zA-Z0-9_-]+\.)?huggingface\.co(/|$|\?) ]]; then
+        auth_token="$HF_TOKEN"
+    elif 
+        [[ -n $CIVITAI_TOKEN && $1 =~ ^https://([a-zA-Z0-9_-]+\.)?civitai\.com(/|$|\?) ]]; then
+        auth_token="$CIVITAI_TOKEN"
+    fi
+    if [[ -n $auth_token ]];then
+        wget --header="Authorization: Bearer $auth_token" -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1"
+    else
+        wget -qnc --content-disposition --show-progress -e dotbytes="${3:-4M}" -P "$2" "$1"
+    fi
 }
 
 provisioning_start

@@ -42,14 +42,15 @@ CHECKPOINT_MODELS=(
 
 UNET_MODELS=(
     # "https://civitai.com/api/download/models/691639?type=Model&format=SafeTensor&size=pruned&fp=fp32" # FLUX.1
-    "https://huggingface.co/black-forest-labs/FLUX.1-dev/blob/main/flux1-dev.safetensors" # FLUX.1 If you have high VRAM and RAM.
-    # "https://huggingface.co/black-forest-labs/FLUX.1-schnell/blob/main/flux1-schnell.safetensors" # FLUX.1 For lower memory usage
+    "https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/flux1-dev.safetensors" # FLUX.1 If you have high VRAM and RAM.
+    "https://huggingface.co/Kijai/MimicMotion_pruned/resolve/main/MimicMotionMergedUnet_1-0-fp16.safetensors" # MimicMotion for FLUX.1
+    "https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/main/flux1-schnell.safetensors" # FLUX.1 For lower memory usage
 )
 
 CLIP_MODELS=(
-    "https://huggingface.co/comfyanonymous/flux_text_encoders/blob/main/clip_l.safetensors" # FLUX.1
-    "https://huggingface.co/comfyanonymous/flux_text_encoders/blob/main/t5xxl_fp8_e4m3fn.safetensors" # FLUX.1 For lower memory usage (8-12GB)
-    # "https://huggingface.co/comfyanonymous/flux_text_encoders/blob/main/t5xxl_fp16.safetensors" # FLUX.1 For better results, if you have high VRAM and RAM(more than 32GB ram).
+    "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors" # FLUX.1
+    "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn.safetensors" # FLUX.1 For lower memory usage (8-12GB)
+    # "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp16.safetensors" # FLUX.1 For better results, if you have high VRAM and RAM(more than 32GB ram).
 )
 
 LORA_MODELS=(
@@ -58,7 +59,8 @@ LORA_MODELS=(
 
 VAE_MODELS=(
     # "https://huggingface.co/stabilityai/sd-vae-ft-ema-original/resolve/main/vae-ft-ema-560000-ema-pruned.safetensors"
-    "https://huggingface.co/black-forest-labs/FLUX.1-schnell/blob/main/ae.safetensors" # FLUX.1
+    "https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/main/ae.safetensors" # FLUX.1 schnell vae
+    "https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/vae/diffusion_pytorch_model.safetensors"
     "https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.safetensors"
     "https://huggingface.co/stabilityai/sdxl-vae/resolve/main/sdxl_vae.safetensors"
 )
